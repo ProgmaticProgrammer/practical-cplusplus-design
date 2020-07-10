@@ -30,7 +30,7 @@ using std::istringstream;
 
 void TokenizerTest::assertTokenizerMatches(const std::vector<string>& tokens, const pdCalc::Tokenizer& tokenizer)
 {
-    QCOMPARE( tokens.size(), tokenizer.nTokens() );
+    QCOMPARE( tokens.size(), tokenizer.size() );
 
     auto j = tokens.begin();
     for(auto i : tokenizer)
@@ -39,7 +39,7 @@ void TokenizerTest::assertTokenizerMatches(const std::vector<string>& tokens, co
         ++j;
     }
 
-    for(size_t i = 0; i < tokenizer.nTokens(); ++i)
+    for(size_t i = 0; i < tokenizer.size(); ++i)
     {
         QCOMPARE(tokens[i], tokenizer[i]);
     }

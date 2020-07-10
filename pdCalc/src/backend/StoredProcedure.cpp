@@ -68,7 +68,7 @@ void StoredProcedure::executeImpl() noexcept
     }
     else
     {
-        for(unsigned int i = 0; i < tokenizer_->nTokens(); ++i)
+        for(unsigned int i = 0; i < tokenizer_->size(); ++i)
             ce_->commandEntered("redo");
     }
 
@@ -77,7 +77,7 @@ void StoredProcedure::executeImpl() noexcept
 
 void StoredProcedure::undoImpl() noexcept
 {
-    for(unsigned int i = 0; i < tokenizer_->nTokens(); ++i)
+    for(unsigned int i = 0; i < tokenizer_->size(); ++i)
         ce_->commandEntered("undo");
 
     return;

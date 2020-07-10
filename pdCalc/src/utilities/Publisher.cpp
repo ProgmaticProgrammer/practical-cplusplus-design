@@ -28,22 +28,22 @@ using std::string;
 using std::vector;
 using std::set;
 using std::ostringstream;
-using std::unique_ptr;
+//using std::unique_ptr;
 using std::shared_ptr;
 
 namespace pdCalc {
 
 class Publisher::PublisherImpl
 {
-    using ObserversList = std::unordered_map<string, unique_ptr<Observer>>;
+    using ObserversList = std::unordered_map<string, shared_ptr<Observer>>;
     using Events = std::unordered_map<string, ObserversList>;
     
 public:    
     PublisherImpl();
     ~PublisherImpl();    
     
-    void attach(const string& eventName, unique_ptr<Observer> observer);
-    unique_ptr<Observer> detach(const string& eventName, const string& observer);
+    void attach(const string& eventName, shared_ptr<Observer> observer);
+    shared_ptr<Observer> detach(const string& eventName, const string& observer);
     void notify(const string& eventName, shared_ptr<EventData> d) const;
     void registerEvent(const string& eventName);
     void registerEvents(const vector<string>& eventNames);
@@ -91,7 +91,7 @@ Publisher::PublisherImpl::Events::iterator Publisher::PublisherImpl::findChecked
     return ev;
 }
 
-void Publisher::PublisherImpl::attach(const string& eventName, unique_ptr<Observer> observer)
+void Publisher::PublisherImpl::attach(const string& eventName, shared_ptr<Observer> observer)
 { 
     auto ev = findCheckedEvent(eventName);   
     auto& obsList = ev->second;
@@ -100,12 +100,12 @@ void Publisher::PublisherImpl::attach(const string& eventName, unique_ptr<Observ
     if( obs != obsList.end() )
         throw Exception("Observer already attached to publisher");   
 
-    obsList.insert( std::make_pair(observer->name(), std::move(observer)) );
+    obsList.insert( std::make_pair(observer->name(), observer) );
     
     return;
 }
   
-unique_ptr<Observer> Publisher::PublisherImpl::detach(const string& eventName, const string& observer)
+shared_ptr<Observer> Publisher::PublisherImpl::detach(const string& eventName, const string& observer)
 { 
     auto ev = findCheckedEvent(eventName);
     auto& obsList = ev->second;
@@ -114,7 +114,7 @@ unique_ptr<Observer> Publisher::PublisherImpl::detach(const string& eventName, c
     if( obs == obsList.end() )
         throw Exception("Cannot detach observer because observer not found");
     
-    auto tmp = std::move(obs->second);
+    auto tmp = obs->second;
     obsList.erase(obs);
     
     return tmp;
@@ -184,14 +184,14 @@ Publisher::~Publisher()
     // std::unique_ptr is known
 }
 
- void Publisher::attach(const string& eventName, unique_ptr<Observer> observer)
+ void Publisher::attach(const string& eventName, shared_ptr<Observer> observer)
  {
-     publisherImpl_->attach(eventName, std::move(observer));
+     publisherImpl_->attach(eventName, observer);
     
      return;
  }
  
-unique_ptr<Observer> Publisher::detach(const string& eventName, const string& observer)
+shared_ptr<Observer> Publisher::detach(const string& eventName, const string& observer)
 {
     return publisherImpl_->detach(eventName, observer);
 }

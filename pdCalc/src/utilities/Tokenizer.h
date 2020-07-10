@@ -36,7 +36,7 @@ public:
     explicit Tokenizer(std::istream&);
     ~Tokenizer();
 
-    size_t nTokens() const { return tokens_.size(); }
+    size_t size() const { return tokens_.size(); }
 
     const_iterator begin() const { return tokens_.begin(); }
     const_iterator end() const { return tokens_.end(); }

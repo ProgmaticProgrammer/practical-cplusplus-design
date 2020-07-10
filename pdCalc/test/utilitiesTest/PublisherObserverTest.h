@@ -41,7 +41,7 @@ private slots:
     void testGetState();
     
 private:
-    ConcretePublisher* pt_;
+    ConcretePublisher* publisher_;
 };
 
 #endif

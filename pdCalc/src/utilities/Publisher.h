@@ -47,8 +47,8 @@ class Publisher
 public:
     Publisher();
 
-    void attach(const std::string& eventName, std::unique_ptr<Observer> observer);
-    std::unique_ptr<Observer> detach(const std::string& eventName, const std::string& observerName);
+    void attach(const std::string& eventName, std::shared_ptr<Observer> observer);
+    std::shared_ptr<Observer> detach(const std::string& eventName, const std::string& observerName);
 
     std::set<std::string> listEvents() const;
     std::set<std::string> listEventObservers(const std::string& eventName) const;
