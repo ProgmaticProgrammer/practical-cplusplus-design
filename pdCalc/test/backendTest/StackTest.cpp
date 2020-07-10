@@ -26,7 +26,7 @@ using std::vector;
 using std::vector;
 using std::string;
 using std::shared_ptr;
-using std::unique_ptr;
+//using std::unique_ptr;
 
 class StackChangedObserver : public pdCalc::Observer
 {
@@ -84,8 +84,8 @@ void StackTest::testPushPop()
 {
     pdCalc::Stack& stack = pdCalc::Stack::Instance();
     stack.clear();
-    StackChangedObserver* raw = new StackChangedObserver{"StackChangedObserver"};
-    stack.attach( pdCalc::Stack::StackChanged, unique_ptr<pdCalc::Observer>{raw} );
+    auto observer = std::make_shared<StackChangedObserver>("StackChangedObserver");
+    stack.attach( pdCalc::Stack::StackChanged, shared_ptr<pdCalc::Observer>{observer} );
 
     QVERIFY( stack.size() == 0 );
 
@@ -127,12 +127,12 @@ void StackTest::testPushPop()
     QCOMPARE( cur[1], 17.3 );
     QCOMPARE( cur[2], 3.14159 );
 
-    QCOMPARE(raw->changeCount(), 5u);
+    QCOMPARE(observer->changeCount(), 5u);
 
     stack.push(5.0, true);
     stack.pop(true);
 
-    QCOMPARE(raw->changeCount(), 5u);
+    QCOMPARE(observer->changeCount(), 5u);
 
     stack.clear();
     stack.detach(pdCalc::Stack::StackChanged, "StackChangedObserver");
@@ -144,8 +144,8 @@ void StackTest::testSwapTop()
 {
     pdCalc::Stack& stack = pdCalc::Stack::Instance();
     stack.clear();
-    StackChangedObserver* raw = new StackChangedObserver{"StackChangedObserver"};
-    stack.attach( pdCalc::Stack::StackChanged, unique_ptr<pdCalc::Observer>{raw} );
+    auto observer = std::make_shared<StackChangedObserver>("StackChangedObserver");
+    stack.attach( pdCalc::Stack::StackChanged, shared_ptr<pdCalc::Observer>{observer} );
 
     QVERIFY( stack.size() == 0 );
 
@@ -176,7 +176,7 @@ void StackTest::testSwapTop()
     QCOMPARE( cur[1], 2.0 );
     QCOMPARE( cur[2], 17.3 );
 
-    QCOMPARE(raw->changeCount(), 5u);
+    QCOMPARE(observer->changeCount(), 5u);
 
     stack.clear();
     stack.detach(pdCalc::Stack::StackChanged, "StackChangedObserver");
@@ -188,8 +188,8 @@ void StackTest::testErrors()
 {
     pdCalc::Stack& stack = pdCalc::Stack::Instance();
     stack.clear();
-    StackErrorObserver* raw = new StackErrorObserver{"StackErrorObserver"};
-    stack.attach( pdCalc::Stack::StackError, unique_ptr<pdCalc::Observer>{raw} );
+    auto observer = std::make_shared<StackErrorObserver>("StackErrorObserver");
+    stack.attach( pdCalc::Stack::StackError, shared_ptr<pdCalc::Observer>{observer} );
 
     const string emptyMsg = pdCalc::StackEventData::Message(pdCalc::StackEventData::ErrorConditions::Empty);
     const string swapMsg = pdCalc::StackEventData::Message(pdCalc::StackEventData::ErrorConditions::TooFewArguments);
@@ -214,12 +214,12 @@ void StackTest::testErrors()
         QCOMPARE(e.what(), swapMsg);
     }
 
-    const vector<string>& msgs { raw->errorMessages() };
+    const vector<string>& msgs { observer->errorMessages() };
     QVERIFY(msgs.size() == 2);
     QCOMPARE(msgs[0], emptyMsg);
     QCOMPARE(msgs[1], swapMsg);
 
-    const vector<pdCalc::StackEventData::ErrorConditions> errors { raw->errors() };
+    const vector<pdCalc::StackEventData::ErrorConditions> errors { observer->errors() };
     QVERIFY(errors.size() == 2);
     QCOMPARE(errors[0], pdCalc::StackEventData::ErrorConditions::Empty);
     QCOMPARE(errors[1], pdCalc::StackEventData::ErrorConditions::TooFewArguments);
