@@ -55,4 +55,4 @@ jobs:
           qmake
           make
           cd bin
-          testPdCalc
+          ./testPdCalc
