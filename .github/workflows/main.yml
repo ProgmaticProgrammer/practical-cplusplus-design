@@ -28,7 +28,7 @@ jobs:
         # Version of Qt to install
         version: '5.13.2'
         # Host platform
-        host: 'windows'
+        host: 'linux'
         # Target platform for build
         target: 'desktop'
         # Architecture for Windows/Android
