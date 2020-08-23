@@ -51,5 +51,6 @@ jobs:
           fetch-depth: 1
       - name: build ubuntu
         run: |
+          cd pdCalc
           qmake
           make
