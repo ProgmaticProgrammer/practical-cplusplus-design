@@ -15,7 +15,7 @@ jobs:
   # This workflow contains a single job called "build"
   build:
     # The type of runner that the job will run on
-    runs-on: ubuntu-latest
+    runs-on: windows-latest
 
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
@@ -29,7 +29,7 @@ jobs:
         # Version of Qt to install
         version: '5.13.2'
         # Host platform
-        host: 'linux'
+        host: 'windows'
         # Target platform for build
         target: 'desktop'
         # Architecture for Windows/Android
@@ -58,8 +58,8 @@ jobs:
 
     - name: build ubuntu
       run: |
-        set(ENV{Qt5_DIR} "${{ steps.qt.dir}}" )
-        set(ENV{PATH} "${{ Qt5_DIR }}/${{ steps.qt.version }}/${{ steps.qt.arch }}/bin/:$ENV{PATH}")
+        #set(ENV{Qt5_DIR} "${{ steps.qt.dir}}" )
+        set(ENV{PATH} "${{ github.workspace }}/5.13.2/5.13.2/bin/:$ENV{PATH}")
         #set(ENV{LD_LIBRARY_PATH} "qtcreator/lib/Qt/lib:$ENV{LD_LIBRARY_PATH}")
         qmake
         make
