@@ -24,7 +24,7 @@ jobs:
       uses: jurplel/install-qt-action@v2.8.0
       with:
         # Directory to install Qt
-        dir: '${{ github.workspace }}/example/'
+        dir: '${{ github.workspace }}/example'
         # Version of Qt to install
         version: '5.13.2'
         # Host platform
