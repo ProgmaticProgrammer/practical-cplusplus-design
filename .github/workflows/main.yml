@@ -58,7 +58,7 @@ jobs:
 
     - name: build ubuntu
       run: |
-        set(ENV{Qt5_DIR} "${{ steps.qt.dir" }})
+        set(ENV{Qt5_DIR} "${{ steps.qt.dir}}" )
         set(ENV{PATH} "${{ Qt5_DIR }}/${{ steps.qt.version }}/${{ steps.qt.arch }}/bin/:$ENV{PATH}")
         #set(ENV{LD_LIBRARY_PATH} "qtcreator/lib/Qt/lib:$ENV{LD_LIBRARY_PATH}")
         qmake
