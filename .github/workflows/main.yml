@@ -21,6 +21,7 @@ jobs:
     steps:
     # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
     - name: Install Qt
+      id: qt
       uses: jurplel/install-qt-action@v2.8.0
       with:
         # Directory to install Qt
@@ -57,5 +58,7 @@ jobs:
 
     - name: build ubuntu
       run: |
+        set(ENV{PATH} "${{ Qt5_DIR }}/ ${{ steps.qt.version }} / ${{ steps.qt.arch }} /bin/:$ENV{PATH}")
+        #set(ENV{LD_LIBRARY_PATH} "qtcreator/lib/Qt/lib:$ENV{LD_LIBRARY_PATH}")
         qmake
         make
