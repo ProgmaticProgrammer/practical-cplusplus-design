@@ -56,7 +56,7 @@ jobs:
 
     - name: Build
       run: |
-        '$$ENV{Qt5_DIR}\bin\vcvarsall.bat'
+        '$$ENV{Qt5_DIR}\bin\qtenv2.bat'
         cd '${{ github.workspace }}'
         qmake
         mingw64-make.exe
