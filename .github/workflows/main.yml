@@ -56,7 +56,7 @@ jobs:
 
     - name: Build
       run: |
-        call "${{ github.workspace }}\5.13.2\win64_mingw73\vcvarsall.bat"
-        call "cd ${{ github.workspace }}"
+        $Qt5_DIR/bin/vcvarsall.bat
+        cd ${{ github.workspace }}
         qmake
-        nmake
+        mingw64-make.exe
