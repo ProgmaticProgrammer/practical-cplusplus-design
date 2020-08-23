@@ -54,3 +54,4 @@ jobs:
           cd pdCalc
           qmake
           make
+          make check
