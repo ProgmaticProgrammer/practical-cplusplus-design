@@ -56,8 +56,8 @@ jobs:
 
     - name: Build
       run: |
-        echo "::add-path::$ENV{Qt5_DIR}\bin"
-        echo "::add-path::$ENV{Qt5_DIR}\..\..\Tools\mingw73_64/bin"
+        echo "::add-path::$ENV{{ Qt5_DIR }}\bin"
+        echo "::add-path::$ENV{{ Qt5_DIR }}\..\..\Tools\mingw73_64/bin"
         cd ${{ github.workspace }}
         qmake
         mingw64-make.exe
